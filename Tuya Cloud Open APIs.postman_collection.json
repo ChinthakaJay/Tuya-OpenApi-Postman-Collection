@@ -1,0 +1,4881 @@
+{
+	"info": {
+		"_postman_id": "3417c0b6-2f9c-4e1c-9a0e-bda824dcb918",
+		"name": "Tuya Cloud Open APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Tokens",
+			"item": [
+				{
+					"name": "get access_token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1b2ed26c-f92e-4d6f-89d0-f6836413e7c6",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"if(response !== null){",
+									"    tests[\"Is Success\"] = response.success === true;",
+									"    if(response.success){",
+									"        tests[\"Body contains access_token\"] = responseBody.has(\"access_token\");",
+									"        pm.environment.set(\"easy_access_token\",response.result.access_token);",
+									"        pm.environment.set(\"easy_refresh_token\",response.result.refresh_token);",
+									"    }",
+									"    else{",
+									"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+									"        tests[msg] = false;",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "831a7cad-f3da-489b-8661-da9d141fffb5",
+								"exec": [
+									"(function () { ",
+									"    var timestamp = getTime();",
+									"    pm.environment.set(\"timestamp\",timestamp);",
+									"    var clientId = pm.environment.get(\"client_id\");",
+									"    var secret = pm.environment.get(\"secret\");",
+									"    var sign = calcSign(clientId,secret,timestamp);",
+									"    pm.environment.set('easy_sign', sign);",
+									"})();",
+									"",
+									"function getTime(){",
+									"    var timestamp = new Date().getTime();",
+									"    return timestamp;",
+									"}",
+									"",
+									"function calcSign(clientId,secret,timestamp){",
+									"    var str = clientId + timestamp;",
+									"    var hash = CryptoJS.HmacSHA256(str, secret);",
+									"    var hashInBase64 = hash.toString();",
+									"    var signUp = hashInBase64.toUpperCase();",
+									"    return signUp;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "sign",
+								"value": "{{easy_sign}}",
+								"type": "text"
+							},
+							{
+								"key": "t",
+								"value": "{{timestamp}}",
+								"type": "text"
+							},
+							{
+								"key": "sign_method",
+								"value": "HMAC-SHA256",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1.0/token?grant_type=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1.0",
+								"token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d918419f-d524-40f1-82c8-6e5cc4328968",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"if(response !== null){",
+									"    tests[\"Is Success\"] = response.success === true;",
+									"    if(response.success){",
+									"        tests[\"Body contains access_token\"] = responseBody.has(\"access_token\");",
+									"        pm.environment.set(\"easy_access_token\",response.result.access_token);",
+									"        pm.environment.set(\"easy_refresh_token\",response.result.refresh_token);",
+									"    }",
+									"    else{",
+									"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+									"        tests[msg] = false;",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "251a4e84-073b-4f45-b400-37aecb183f73",
+								"exec": [
+									"(function () {",
+									"    var timestamp = getTime();",
+									"    pm.environment.set(\"timestamp\",timestamp);",
+									"    var clientId = pm.environment.get(\"client_id\");",
+									"    var secret = pm.environment.get(\"secret\");",
+									"    var sign = calcSign(clientId,secret,timestamp);",
+									"    pm.environment.set('easy_sign', sign);",
+									"})();",
+									"",
+									"function getTime(){",
+									"    var timestamp = new Date().getTime();",
+									"    return timestamp;",
+									"}",
+									"",
+									"function calcSign(clientId,secret,timestamp){",
+									"    var str = clientId + timestamp;",
+									"    var hash = CryptoJS.HmacSHA256(str, secret);",
+									"    var hashInBase64 = hash.toString();",
+									"    var signUp = hashInBase64.toUpperCase();",
+									"    return signUp;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "sign",
+								"value": "{{easy_sign}}",
+								"type": "text"
+							},
+							{
+								"key": "t",
+								"value": "{{timestamp}}",
+								"type": "text"
+							},
+							{
+								"key": "sign_method",
+								"value": "HMAC-SHA256",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1.0/token/{{easy_refresh_token}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1.0",
+								"token",
+								"{{easy_refresh_token}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate distribution network token",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c43c78e3-975a-4874-8b62-0ccae247835c",
+								"exec": [
+									"(function () {",
+									"    var timestamp = getTime();",
+									"    pm.environment.set(\"timestamp\",timestamp);",
+									"    var clientId = pm.environment.get(\"client_id\");",
+									"    var secret = pm.environment.get(\"secret\");",
+									"    var access_token = pm.environment.get(\"easy_access_token\");",
+									"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+									"    pm.environment.set('easy_sign', sign);",
+									"})();",
+									"",
+									"function getTime(){",
+									"    var timestamp = new Date().getTime();",
+									"    return timestamp;",
+									"}",
+									"",
+									"function calcSign(clientId,access_token,secret,timestamp){",
+									"    var str = clientId + access_token + timestamp;",
+									"    var hash = CryptoJS.HmacSHA256(str, secret);",
+									"    var hashInBase64 = hash.toString();",
+									"    var signUp = hashInBase64.toUpperCase();",
+									"    return signUp;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "1e0b35d2-f211-4766-8f84-71166265f3d1",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"if(response !== null){",
+									"    tests[\"Is Success\"] = response.success === true;",
+									"    if(!response.success){",
+									"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+									"        tests[msg] = false;",
+									"    }else{",
+									"        tests[\"Token Not Null\"] = response.result.token !== \"\";",
+									"        pm.environment.set(\"pair_token\",response.result.token);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "access_token",
+								"value": "{{easy_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "sign",
+								"value": "{{easy_sign}}",
+								"type": "text"
+							},
+							{
+								"key": "t",
+								"value": "{{timestamp}}",
+								"type": "text"
+							},
+							{
+								"key": "sign_method",
+								"value": "HMAC-SHA256",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"uid\":\"{{uid}}\",\n\t\"timeZoneId\":\"Asia/Shanghai\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/v1.0/devices/token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1.0",
+								"devices",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Device",
+			"item": [
+				{
+					"name": "Zigbee",
+					"item": [
+						{
+							"name": "Zigbee enable sub device discovery",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "516f2140-e078-4428-aae6-085d01f3064b",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "646c19cb-3754-4413-b1d0-f49c53eaddcd",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }else{",
+											"        tests[\"result Not Null\"] = response.result !== [];",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/enabled-sub-discovery?duration=30",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"enabled-sub-discovery"
+									],
+									"query": [
+										{
+											"key": "duration",
+											"value": "30"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get list of connected sub devices",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "7665b7d8-7a37-44ea-aae9-47d2a55a4af4",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "2f38e471-2425-439e-a93a-2341954c8cc1",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }else{",
+											"        tests[\"result Not Null\"] = response.result.length > 0;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/sub-devices",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"sub-devices"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get the list of devices added after a given epoch time",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "848813e2-9284-439e-9fe0-381d4bec1717",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "ce4a6120-73ae-4128-b8e7-4ad2aa2d0f6a",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }else{",
+											"        tests[\"result Not Null\"] = response.result.length > 0;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/list-sub?discovery_time=1592376268557\n",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"list-sub"
+									],
+									"query": [
+										{
+											"key": "discovery_time",
+											"value": "1592376268557\n"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Infrared",
+					"item": [
+						{
+							"name": "Get remotes under the IR device",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "45892a81-dfbe-4040-9421-a7de9b3df77b",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/remotes",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"remotes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get supported categories by device id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "087e68a8-1b8e-4746-88bf-ff55c0b4e519",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/categories",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get brands for category",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "b73f0775-998d-4f7d-a227-b929cfbff202",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/categories/{{category_id}}/brands",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"categories",
+										"{{category_id}}",
+										"brands"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get remote Indices for category and brand",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "6ea7c2e0-bc3a-494f-a09b-f788c134b75c",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"category_id\": \"2\",\r\n  \"category_name\": \"电视\",\r\n  \"brand_id\": \"27\",\r\n  \"brand_name\": \"TCL\",\r\n  \"remote_index\": \"10982\",\r\n  \"remote_name\": \"My room\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/categories/{{category_id}}/brands/{{brand_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"categories",
+										"{{category_id}}",
+										"brands",
+										"{{brand_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Available buttons for remote index",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "2980e24f-adb2-4fb0-95c4-596257861dab",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/categories/{{category_id}}/brands/{{brand_id}}/remotes/{{remote_index}}/rules",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"categories",
+										"{{category_id}}",
+										"brands",
+										"{{brand_id}}",
+										"remotes",
+										"{{remote_index}}",
+										"rules"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Buttons before adding remote using key id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e582186c-c45c-47dc-b77e-00cf46f049e9",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"remote_index\":{{remote_index}},\r\n    \"category_id\":{{category_id}},\r\n    \"raw_key\":9367\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/testing/raw/command",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"testing",
+										"raw",
+										"command"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Buttons before adding remote using Standard key",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "205a426d-9096-4ac6-ac61-8bfc9cf8a97c",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"remote_index\":{{remote_index}},\r\n    \"category_id\":{{category_id}},\r\n    \"key\":\"Speed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/testing/command",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"testing",
+										"command"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Buttons before adding remote for AC",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "8b50d1ca-83f1-43f8-b487-311e4f07a40a",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"remote_index\":{{remote_index}},\r\n\t\"category_id\":{{category_id}},\r\n\t\"code\": \"power\",\r\n\t\"value\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/air-conditioners/testing/command",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"air-conditioners",
+										"testing",
+										"command"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add normal remote control for the IR device",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "31b68f11-8ff1-417c-9cc5-2a658f690082",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"category_id\":5,\r\n\t\"category_name\":\"Air Conditioner\",\r\n\t\"brand_id\":202,\r\n\t\"brand_name\":\"Panasonic\",\r\n\t\"remote_index\":7790,\r\n\t\"remote_name\":\"AC Remote Panasonic Test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/normal/add-remote",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"normal",
+										"add-remote"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set Remote control alias",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "aac4ed63-24ec-4113-b982-da96911ce967",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"remote_id\": \"{{remote_id}}\",\r\n  \"remote_name\": \"My test DIY remote\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send command to remote control using Key id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "cd4b7328-9552-4fd9-84b3-4570c18079de",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"remote_index\": {{remote_index}},\r\n  \"key\": 9367\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/send-keys",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"send-keys"
+									]
+								},
+								"description": "Key id is obtained from get available button api\r\n"
+							},
+							"response": []
+						},
+						{
+							"name": "Send command to remote control using Standard key",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f9b88941-72c2-4f2f-b4ba-23c8075d9302",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"key\": \"Speed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/remotes/{{remote_id}}/send-keys",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"remotes",
+										"{{remote_id}}",
+										"send-keys"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send a single command to AC remotes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "9be8a843-5128-4b3e-bca0-4627350fd869",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"code\":\"temp\",\r\n  \"value\":23\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/air-conditioners/{{remote_id}}/command",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"air-conditioners",
+										"{{remote_id}}",
+										"command"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send multiple commands to AC remotes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "b537222c-12ce-4f7d-a696-eeebadee0627",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"power\": 1,\r\n  \"temp\": 20,\r\n  \"wind\": 1,\r\n  \"mode\":4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/air-conditioners/{{remote_id}}/scenes/command",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"air-conditioners",
+										"{{remote_id}}",
+										"scenes",
+										"command"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get AC status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "705aa5e8-92ac-4a59-8b07-6c90178e9260",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/remotes/{{remote_id}}/ac/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"remotes",
+										"{{remote_id}}",
+										"ac",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Put IR device in learning mode",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e255991e-7b9b-445c-a25e-dc55099fdfb7",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/learning-state?state=true",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"learning-state"
+									],
+									"query": [
+										{
+											"key": "state",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get learned IR code",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "7486b606-96e9-4551-9453-92e0783e42f0",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/learning-codes?learning_time=1593576331607",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"learning-codes"
+									],
+									"query": [
+										{
+											"key": "learning_time",
+											"value": "1593576331607"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a remote with learned codes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1cdae0ca-f679-4d79-9cb8-ba660b4e1c60",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"codes\": [{\r\n      \"code\": \"ce04ae01ec04b8019a010005e204b801ec04ae019a0100059a0100059a010005ec04ae019a0100059001140586018e21ec04ae01ec04ae01a401e204ec04ae01e204ae01a401f604a401f604a401f604ec04ae01a4019c049a0100059a015c21e204a401ec04a401a401f604e204cc01ce04a4019a0100059a01000590010005ec04ae019a010005860114057c01a221ec04ae01f604a401a4010005e204ae01ec04ae01a401f604a401f604a401f604ec04ae01a401f604a401f6049a018e21ec04ae01ec04ae019a010005ec04ae01ec04ae019a010005900100059a010005ec04ae019a0100059a01f604a4018e21e204ae01e204b8019a01f604ec04ae01ec04ae014a01f6049a01e2049a01f604ce04ae01a401ec049a01000586018e21ec04c201ce04ae019a010005ec04ae01ec04ae019a0100059001000572010005ec04ae019a0100059a01f6049a012aa1\",\r\n      \"name\": \"Timer\"\r\n    },\r\n    {\r\n      \"code\": \"d804ae01ec04a40186011405ec04a4017e04ae018601140568011405860114057c01f604e204ae017c0114057c01a221ec04ae01e204a40186011405ec04ae01e204b8019a010005860114057c011e0586011405e204ae017c0114057c01ac21ec04ae01ec04ae0186011405ec04ae01ec04ae01860114058601140586010a0586011405ec04ae01860114059a018e21ec04ae01ec04a40186011405ec04ae01ec04ae0186010a058601140586011405a401f604ec04ae017c010a0586015c21ce04ae01d804ae019a01f604ce04ae01e204a4019a010005860114058601140590010a05ec04ae018601140590018421ec04ae01e204b8019a01f604e204ae01ec04ae01a40100057c0114058601140586011405ec04ae019a01000590018e21d804ae01ec04ae0186010a05ec04ae01ec04a4019a01000590010a057c011e059a01f604ec04ae01860132057c012aa1\",\r\n      \"name\": \"Mode\"\r\n    },\r\n    {\r\n      \"code\": \"d804a401ec04ae013601f604ec04ae01d804b8019a01d8048601f6049a010005a401f6049a010005e204ae019a019821ec04a401f604ae019a010005ec04ae01ec04ae019a0100059a01f6049a01f604a401e204a4010005e204b8019a018e21e204ae01ec04ae019a010005ec04ae01ec04ae0186010a059a0100059a0100059a0100059a010005ec04ae01a4018421f604a401ec04b8019a01ec04f604ae01e204ae01a401ec0486011405a40100059a01f6049a010005e204ae0186013e21d8049a01e204a4017c011405ec04ae01e204b80186010a05a401f604a401f604a401f60486011405ec04ae01a4018421e204ae01ec04ae01a401ec04ec04a401ec04ae017c0114059a0100057c0114057c010a0586011405e204ae019a018e21ec04ae01ec04a40186011405ec04a401ec04ae017c011405860114057c011e059a01000586010a05f604ae017c01ac21ec04ae01e204ae0186011405ec04ae01ec04ae01860114059a0100059a0100057c01c4049a01f604c404a401a4012aa1\",\r\n      \"name\": \"Speed\"\r\n    },\r\n    {\r\n      \"code\": \"ce04ae01ec04a40186011405ec04ae01ec049a0186010a05a401ec04e204ae017c011e059a0100057c011e057c01ac21ec04ae01ec04ae019a010005e204b801d804b8017201140586011405ec04ae019a0100059a0100059a01000590018e21e204ae01ec04ae017c011405ec04a401ec04ae014001000586010005ec04ae017c0114057201f60472011e059a018e21ec04a401e204b8019a01f604ec04ae01ec04ae018601140586011405ec04ae01a401f60486010a058601140586018e21ec04ae01ec04ae017c011e05e204b801e204b8019a01f6047c011405ec04ae01a401f604a401f60486010a058601a221ec04a401e204ae0186011405ec04ae01ec04ae01860114059a01f604e204b80172011e057201140586011405a4017a219204ae01ec04a4019001f604ec04ae01ce04a4018601140586011405ec04ae019a01f60486011e059a01f60486012aa1\",\r\n      \"name\": \"Swing\"\r\n    },\r\n    {\r\n      \"code\": \"b004b801e204cc0186010005e204a401ec04d6017c01ec04a401ec049a011e0572011e057c0150054a011e05ce04f61dba04b801e204b8017c01ec04e204ae01e204ae019a0100059a011e057c0100059a011e057c0150054a011e05c4043c1ed804b801e204b8019001f604ec04ae01ec04ae01a40114057c0100059a0100059a0100059a0100059a01f604ec04461eec04ae01e204ae01a4011405c404ae01ec04ae01a40114057c011e057c011e057c0100059a011e057c011e05c404461eec04cc01ce04cc017c010005ec04cc01c404d6017201f604a4011405860114057c0100059a011e0518011e05c404321ec404ae01e204b8019a010005ec04ae01ec04a4019a01f604a4010a058601f6049a011e057c011e057c011e05c4042aa1\",\r\n      \"name\": \"Off\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/learning-codes",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"learning-codes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get DIY remote ir codes",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "dda11a1f-87b9-411e-b2db-18730e61cecc",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/remotes/{{remote_id}}/learning-codes",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"remotes",
+										"{{remote_id}}",
+										"learning-codes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send Command to DIY remote",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "8aeb8796-8eda-4cce-ad6c-340127c0fdd6",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\":\"d804a401ec04ae013601f604ec04ae01d804b8019a01d8048601f6049a010005a401f6049a010005e204ae019a019821ec04a401f604ae019a010005ec04ae01ec04ae019a0100059a01f6049a01f604a401e204a4010005e204b8019a018e21e204ae01ec04ae019a010005ec04ae01ec04ae0186010a059a0100059a0100059a0100059a010005ec04ae01a4018421f604a401ec04b8019a01ec04f604ae01e204ae01a401ec0486011405a40100059a01f6049a010005e204ae0186013e21d8049a01e204a4017c011405ec04ae01e204b80186010a05a401f604a401f604a401f60486011405ec04ae01a4018421e204ae01ec04ae01a401ec04ec04a401ec04ae017c0114059a0100057c0114057c010a0586011405e204ae019a018e21ec04ae01ec04a40186011405ec04a401ec04ae017c011405860114057c011e059a01000586010a05f604ae017c01ac21ec04ae01e204ae0186011405ec04ae01ec04ae01860114059a0100059a0100057c01c4049a01f604c404a401a4012aa1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/remotes/{{remote_id}}/learning-codes",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"remotes",
+										"{{remote_id}}",
+										"learning-codes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update DIY remote",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "869a0c80-f316-4e0e-8936-25f4983c6fa7",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"codes\": [{\r\n      \"code\":\"d804a401ec04ae013601f604ec04ae01d804b8019a01d8048601f6049a010005a401f6049a010005e204ae019a019821ec04a401f604ae019a010005ec04ae01ec04ae019a0100059a01f6049a01f604a401e204a4010005e204b8019a018e21e204ae01ec04ae019a010005ec04ae01ec04ae0186010a059a0100059a0100059a0100059a010005ec04ae01a4018421f604a401ec04b8019a01ec04f604ae01e204ae01a401ec0486011405a40100059a01f6049a010005e204ae0186013e21d8049a01e204a4017c011405ec04ae01e204b80186010a05a401f604a401f604a401f60486011405ec04ae01a4018421e204ae01ec04ae01a401ec04ec04a401ec04ae017c0114059a0100057c0114057c010a0586011405e204ae019a018e21ec04ae01ec04a40186011405ec04a401ec04ae017c011405860114057c011e059a01000586010a05f604ae017c01ac21ec04ae01e204ae0186011405ec04ae01ec04ae01860114059a0100059a0100057c01c4049a01f604c404a401a4012aa1\",\r\n      \"name\": \"Off\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/learning-remotes/{{remote_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"learning-remotes",
+										"{{remote_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete a IR code Saved",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "1674c067-984a-4bb0-b9a1-929172ea6409",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/learning-codes/1247123",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"learning-codes",
+										"1247123"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Smart matching token for learned Code",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "2a6846af-bc9a-49ad-93e6-8dcfca28533b",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "b3546595-890d-4cb6-b80b-20fd986955dc",
+										"exec": [
+											"var response = JSON.parse(responseBody);\r",
+											"\r",
+											"if(response !== null){\r",
+											"    tests[\"Is Success\"] = response.success === true;\r",
+											"    if(response.success){\r",
+											"        tests[\"Body contains token\"] = responseBody.has(\"token\");\r",
+											"        pm.environment.set(\"smart_match_token\",response.result.token);\r",
+											"    }\r",
+											"    else{\r",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;\r",
+											"        tests[msg] = false;\r",
+											"    }\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"category_id\": \"{{category_id}}\",\r\n\t\"code\":\"ce04ae01ec04a40186011405ec04ae01ec04ae019a0100057c0114059a0100057c011405ec04ae01860114058601a221ec04ae01ec04a4019a010005ec04a401ec04ae01860114057c0114059a0100059a01f604ec04ae019a0100057c01a221e204ae01ec04ae0186011405ec04ae01ec04ae018601140586010a0586011e0572011e05e204ae0186011405a4018e21ec04ae01ec04ae017c011e05d804ae01e204b8017201b00472010a056801e20486011405ec04a4018601f6047201ac21d804b801e204b8019001f604ec04ae01ec04ae018601140586011405860114059a010005ec04ae01860114059a018421ec04ae01ec04ae0186011405ec04ae01e204b8019a01000586010a057201140586011405ec04ae01860114058601a221ec04c201ce04ae019a010005e204ae01e204b8019a01e20468011e0572011e057c011e05d804ae01a401f6048601a221ec04ae01ec04ae018601b004ec049a01ec04a4018601f6049a0100059001ec045e011405ec04ae019a0100057c012aa1\",\r\n    \"pre_token\":\"{{smart_match_token}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/matching-remotes/token",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"matching-remotes",
+										"token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Matched Remote Indices",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e692e5ff-cff5-4193-a7f2-79bec58798af",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "5dd4969d-93dd-4871-a814-4629777fa817",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/matching-remotes?token={{smart_match_token}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"matching-remotes"
+									],
+									"query": [
+										{
+											"key": "token",
+											"value": "{{smart_match_token}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get brands available in the reigon for remote index",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "18bc8a5c-5a62-4f0f-880d-379dab78693f",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "549ab33e-66c3-4c5c-999b-3f6fd9c98321",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/categories/{{category_id}}/remotes/{{remote_index}}/brands?region=LK",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"categories",
+										"{{category_id}}",
+										"remotes",
+										"{{remote_index}}",
+										"brands"
+									],
+									"query": [
+										{
+											"key": "region",
+											"value": "LK"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "General",
+					"item": [
+						{
+							"name": "get device list based on user id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f48e0f5b-3d14-4b23-9de1-dcca82be155f",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "8f3fefea-fabb-4884-80f2-2c2e3eb755b4",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }else{",
+											"        tests[\"result Not Null\"] = response.result !== [];",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/users/{{uid}}/devices",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"users",
+										"{{uid}}",
+										"devices"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "issued device",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "14041aaf-e77d-4f83-8956-72c49715a5eb",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "8b94d143-dcfe-4653-93ef-9f0a81338b6b",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"commands\":[\n\t\t{\n\t\t\t\"code\": \"switch_1\",\n\t\t\t\"value\":false\n\t\t}\n\t]\n}"
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/commands",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"commands"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get device status in batches",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c9abf94a-fe26-437f-b2ad-e62ed5998936",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "833675b9-9f07-4483-bd26-0341e6c5ae88",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/status?device_ids={{device_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"status"
+									],
+									"query": [
+										{
+											"key": "device_ids",
+											"value": "{{device_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get device info in batches",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c9abf94a-fe26-437f-b2ad-e62ed5998936",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "e25508fe-be0c-45b4-849a-0affd77bb140",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices?device_ids={{device_id}}&page_no=1&page_size=20",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices"
+									],
+									"query": [
+										{
+											"key": "device_ids",
+											"value": "{{device_id}}"
+										},
+										{
+											"key": "page_no",
+											"value": "1"
+										},
+										{
+											"key": "page_size",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get device info",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "7d1b4d17-dca8-41bb-835c-1e355fdd9b9f",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "acceb7c0-89b7-4d1f-8c12-8ad560695362",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get function list",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "ffe30765-8a6a-4187-892c-046d0f46ee40",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "0d3c7cb3-0103-49b2-b196-e98c51e71360",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }else{",
+											"        tests[\"Functions Not Null\"] = response.result.functions.length > 0;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/functions/dj",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"functions",
+										"dj"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get device status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c9abf94a-fe26-437f-b2ad-e62ed5998936",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "d2a410c1-698d-4e3a-88ef-2f659c0f13a6",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }else{",
+											"        tests[\"result Not Null\"] = response.result.length > 0;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get functions supported by the device",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "227b8e10-0ba8-4886-a657-d2d49fa07322",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "7df543cc-9344-4e5d-acbc-dca25404492b",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }else{",
+											"        tests[\"result Not Null\"] = response.result.functions.length > 0;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/functions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"functions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get a list of devices based on token",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "618a1139-db53-408e-8746-22b605168e8b",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "a77da54f-5fa7-46ba-91b1-321f6a6c2463",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/tokens/{{pair_token}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"tokens",
+										"{{pair_token}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete device",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "92c3b7df-7eec-4b7d-add5-164ced046776",
+										"exec": [
+											"(function () {",
+											"    var timestamp = getTime();",
+											"    pm.environment.set(\"timestamp\",timestamp);",
+											"    var clientId = pm.environment.get(\"client_id\");",
+											"    var secret = pm.environment.get(\"secret\");",
+											"    var access_token = pm.environment.get(\"easy_access_token\");",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+											"    pm.environment.set('easy_sign', sign);",
+											"})();",
+											"",
+											"function getTime(){",
+											"    var timestamp = new Date().getTime();",
+											"    return timestamp;",
+											"}",
+											"",
+											"function calcSign(clientId,access_token,secret,timestamp){",
+											"    var str = clientId + access_token + timestamp;",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);",
+											"    var hashInBase64 = hash.toString();",
+											"    var signUp = hashInBase64.toUpperCase();",
+											"    return signUp;",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "e427c516-f201-4b30-abcb-b76a63d6a9d5",
+										"exec": [
+											"var response = JSON.parse(responseBody);",
+											"",
+											"if(response !== null){",
+											"    tests[\"Is Success\"] = response.success === true;",
+											"    if(!response.success && response.code !=2011 && response.code !=1106){",
+											"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+											"        tests[msg] = false;",
+											"    }",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "user register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6d3b0188-ed05-4357-a79b-1a3bbcea2804",
+								"exec": [
+									"(function () {",
+									"    var timestamp = getTime();",
+									"    pm.environment.set(\"timestamp\",timestamp);",
+									"    var clientId = pm.environment.get(\"client_id\");",
+									"    var secret = pm.environment.get(\"secret\");",
+									"    var access_token = pm.environment.get(\"easy_access_token\");",
+									"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+									"    pm.environment.set('easy_sign', sign);",
+									"})();",
+									"",
+									"function getTime(){",
+									"    var timestamp = new Date().getTime();",
+									"    return timestamp;",
+									"}",
+									"",
+									"function calcSign(clientId,access_token,secret,timestamp){",
+									"    var str = clientId + access_token + timestamp;",
+									"    var hash = CryptoJS.HmacSHA256(str, secret);",
+									"    var hashInBase64 = hash.toString();",
+									"    var signUp = hashInBase64.toUpperCase();",
+									"    return signUp;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "4f5df29e-1fef-418c-a2fc-8de0025b7198",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"if(response !== null){",
+									"    tests[\"Is Success\"] = response.success === true;",
+									"    if(!response.success){",
+									"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+									"        tests[msg] = false;",
+									"    }else{",
+									"        pm.environment.set(\"uid\",response.result.uid);",
+									"        tests[\"Uid Not Null\"] = response.result.uid !== \"\";",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "access_token",
+								"value": "{{easy_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "sign",
+								"value": "{{easy_sign}}",
+								"type": "text"
+							},
+							{
+								"key": "t",
+								"value": "{{timestamp}}",
+								"type": "text"
+							},
+							{
+								"key": "sign_method",
+								"value": "HMAC-SHA256",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"country_code\":\"1\",\n\t\"username\":\"test123\",\n\t\"password\":\"12345654321\",\n\t\"nick_name\":\"test user\",\n\t\"username_type\":\"3\"\n}"
+						},
+						"url": {
+							"raw": "{{url}}/v1.0/apps/{{schema}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1.0",
+								"apps",
+								"{{schema}}",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e430286f-58fd-4ce8-9688-6fec2a161160",
+								"exec": [
+									"(function () {",
+									"    var timestamp = getTime();",
+									"    pm.environment.set(\"timestamp\",timestamp);",
+									"    var clientId = pm.environment.get(\"client_id\");",
+									"    var secret = pm.environment.get(\"secret\");",
+									"    var access_token = pm.environment.get(\"easy_access_token\");",
+									"    var sign = calcSign(clientId,access_token,secret,timestamp);",
+									"    pm.environment.set('easy_sign', sign);",
+									"})();",
+									"",
+									"function getTime(){",
+									"    var timestamp = new Date().getTime();",
+									"    return timestamp;",
+									"}",
+									"",
+									"function calcSign(clientId,access_token,secret,timestamp){",
+									"    var str = clientId + access_token + timestamp;",
+									"    var hash = CryptoJS.HmacSHA256(str, secret);",
+									"    var hashInBase64 = hash.toString();",
+									"    var signUp = hashInBase64.toUpperCase();",
+									"    return signUp;",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "c857e3dd-9128-4fdd-bbc6-37e3d385551d",
+								"exec": [
+									"var response = JSON.parse(responseBody);",
+									"",
+									"if(response !== null){",
+									"    tests[\"Is Success\"] = response.success === true;",
+									"    if(!response.success){",
+									"        var msg = \"code: \" + response.code + \" msg: \" + response.msg;",
+									"        tests[msg] = false;",
+									"    }else{",
+									"        tests[\"List Not Null\"] = response.result.list.length > 0;",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "client_id",
+								"value": "{{client_id}}",
+								"type": "text"
+							},
+							{
+								"key": "access_token",
+								"value": "{{easy_access_token}}",
+								"type": "text"
+							},
+							{
+								"key": "sign",
+								"value": "{{easy_sign}}",
+								"type": "text"
+							},
+							{
+								"key": "t",
+								"value": "{{timestamp}}",
+								"type": "text"
+							},
+							{
+								"key": "sign_method",
+								"value": "HMAC-SHA256",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1.0/apps/{{schema}}/users?page_no=1&page_size=10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1.0",
+								"apps",
+								"{{schema}}",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page_no",
+									"value": "1"
+								},
+								{
+									"key": "page_size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Timers",
+			"item": [
+				{
+					"name": "Infrared",
+					"item": [
+						{
+							"name": "Get Infrared timers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "ed9f8e87-2db6-47aa-91f7-3a91cd37f90b",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\":\"d804a401ec04ae013601f604ec04ae01d804b8019a01d8048601f6049a010005a401f6049a010005e204ae019a019821ec04a401f604ae019a010005ec04ae01ec04ae019a0100059a01f6049a01f604a401e204a4010005e204b8019a018e21e204ae01ec04ae019a010005ec04ae01ec04ae0186010a059a0100059a0100059a0100059a010005ec04ae01a4018421f604a401ec04b8019a01ec04f604ae01e204ae01a401ec0486011405a40100059a01f6049a010005e204ae0186013e21d8049a01e204a4017c011405ec04ae01e204b80186010a05a401f604a401f604a401f60486011405ec04ae01a4018421e204ae01ec04ae01a401ec04ec04a401ec04ae017c0114059a0100057c0114057c010a0586011405e204ae019a018e21ec04ae01ec04a40186011405ec04a401ec04ae017c011405860114057c011e059a01000586010a05f604ae017c01ac21ec04ae01e204ae0186011405ec04ae01ec04ae01860114059a0100059a0100057c01c4049a01f604c404a401a4012aa1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/timers/categories/{{category_id}}/remotes/{{remote_index}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"timers",
+										"categories",
+										"{{category_id}}",
+										"remotes",
+										"{{remote_index}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Add infrared timers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "f256f9ae-2bfb-4154-835f-941f909b0664",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"instruct\":[\r\n    {\r\n      \"key\": \"1\",\r\n      \"time\": \"13:01\"\r\n    },\r\n    {\r\n      \"key\": \"9367\",\r\n      \"time\": \"13:02\"\r\n     }\r\n  ],\r\n  \"loops\":\"0111000\",\r\n  \"category_id\": \"{{category_id}}\",\r\n  \"remote_index\": \"{{remote_index}}\",\r\n  \"timezone_id\": \"Asia/Colombo\",\r\n  \"time_zone\": \"+5:30\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/timers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"timers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Infrared timer by group id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "9e3333aa-7e72-4519-8cda-ad0bd391b653",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"instruct\":[\r\n    {\r\n      \"key\": \"1\",\r\n      \"time\": \"13:04\"\r\n    },\r\n    {\r\n      \"key\": \"9367\",\r\n      \"time\": \"13:05\"\r\n     }\r\n  ],\r\n  \"loops\":\"0000100\",\r\n  \"category_id\": \"{{category_id}}\",\r\n  \"remote_index\": \"{{remote_index}}\",\r\n  \"timezone_id\": \"Asia/Colombo\",\r\n  \"time_zone\": \"+5:30\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/timers/groups/{{timer_group_id}}",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"timers",
+										"groups",
+										"{{timer_group_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Infrared timer by group id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "91b472d5-4960-41dd-818b-5eb0c6918783",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/timers/groups/{{timer_group_id}} ",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"timers",
+										"groups",
+										"{{timer_group_id}} "
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Infrared ALL timers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "455f851c-deff-40ef-95b7-cdb89e6853ce",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/timers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"infrareds",
+										"{{device_id}}",
+										"timers"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "General",
+					"item": [
+						{
+							"name": "Get device timers",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "c94f53ff-a17a-4e29-84bb-ae941f816d0a",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/timers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"timers"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete timer",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "499c5e6d-2ea1-42bd-8d19-483956bbb3dc",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "client_id",
+										"value": "{{client_id}}",
+										"type": "text"
+									},
+									{
+										"key": "access_token",
+										"value": "{{easy_access_token}}",
+										"type": "text"
+									},
+									{
+										"key": "sign",
+										"value": "{{easy_sign}}",
+										"type": "text"
+									},
+									{
+										"key": "t",
+										"value": "{{timestamp}}",
+										"type": "text"
+									},
+									{
+										"key": "sign_method",
+										"value": "HMAC-SHA256",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/timers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"timers"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Timer for device(Not Working)",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "e592866c-a366-435f-a3d4-60aa04acf448",
+										"exec": [
+											"(function () {\r",
+											"    var timestamp = getTime();\r",
+											"    pm.environment.set(\"timestamp\",timestamp);\r",
+											"    var clientId = pm.environment.get(\"client_id\");\r",
+											"    var secret = pm.environment.get(\"secret\");\r",
+											"    var access_token = pm.environment.get(\"easy_access_token\");\r",
+											"    var sign = calcSign(clientId,access_token,secret,timestamp);\r",
+											"    pm.environment.set('easy_sign', sign);\r",
+											"})();\r",
+											"\r",
+											"function getTime(){\r",
+											"    var timestamp = new Date().getTime();\r",
+											"    return timestamp;\r",
+											"}\r",
+											"\r",
+											"function calcSign(clientId,access_token,secret,timestamp){\r",
+											"    var str = clientId + access_token + timestamp;\r",
+											"    var hash = CryptoJS.HmacSHA256(str, secret);\r",
+											"    var hashInBase64 = hash.toString();\r",
+											"    var signUp = hashInBase64.toUpperCase();\r",
+											"    return signUp;\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "client_id",
+										"type": "text",
+										"value": "{{client_id}}"
+									},
+									{
+										"key": "access_token",
+										"type": "text",
+										"value": "{{easy_access_token}}"
+									},
+									{
+										"key": "sign",
+										"type": "text",
+										"value": "{{easy_sign}}"
+									},
+									{
+										"key": "t",
+										"type": "text",
+										"value": "{{timestamp}}"
+									},
+									{
+										"key": "sign_method",
+										"type": "text",
+										"value": "HMAC-SHA256"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"instruct\":[\r\n        {\r\n            \"functions\":[\r\n                {\r\n                    \"code\":\"switch_1\",\r\n                    \"value\":true\r\n                }\r\n            ],\r\n            \"date\":\"00000000\",\r\n            \"time\":\"18:55\"\r\n        },\r\n        {\r\n            \"functions\":[\r\n                {\r\n                    \"code\":\"switch_1\",\r\n                    \"value\":false\r\n                }\r\n            ],\r\n            \"date\":\"00000000\",\r\n            \"time\":\"19:00\"\r\n        }\r\n    ],\r\n    \"loops\":\"0001000\",\r\n    \"category\":\"xpandiot\",\r\n    \"timezone_id\":\"Asia/Colombo\",\r\n    \"time_zone\":\"+5:30\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1.0/devices/{{device_id}}/timers",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1.0",
+										"devices",
+										"{{device_id}}",
+										"timers"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
