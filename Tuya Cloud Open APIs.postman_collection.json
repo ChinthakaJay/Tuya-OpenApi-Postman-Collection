@@ -14,7 +14,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1b2ed26c-f92e-4d6f-89d0-f6836413e7c6",
 								"exec": [
 									"var response = JSON.parse(responseBody);",
 									"",
@@ -37,7 +36,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "831a7cad-f3da-489b-8661-da9d141fffb5",
 								"exec": [
 									"(function () { ",
 									"    var timestamp = getTime();",
@@ -119,7 +117,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "d918419f-d524-40f1-82c8-6e5cc4328968",
 								"exec": [
 									"var response = JSON.parse(responseBody);",
 									"",
@@ -142,7 +139,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "251a4e84-073b-4f45-b400-37aecb183f73",
 								"exec": [
 									"(function () {",
 									"    var timestamp = getTime();",
@@ -219,7 +215,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "c43c78e3-975a-4874-8b62-0ccae247835c",
 								"exec": [
 									"(function () {",
 									"    var timestamp = getTime();",
@@ -250,7 +245,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "1e0b35d2-f211-4766-8f84-71166265f3d1",
 								"exec": [
 									"var response = JSON.parse(responseBody);",
 									"",
@@ -321,8 +315,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Device",
@@ -336,7 +329,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "516f2140-e078-4428-aae6-085d01f3064b",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -367,7 +359,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "646c19cb-3754-4413-b1d0-f49c53eaddcd",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -441,7 +432,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7665b7d8-7a37-44ea-aae9-47d2a55a4af4",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -472,7 +462,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "2f38e471-2425-439e-a93a-2341954c8cc1",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -540,7 +529,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "848813e2-9284-439e-9fe0-381d4bec1717",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -571,7 +559,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "ce4a6120-73ae-4128-b8e7-4ad2aa2d0f6a",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -639,9 +626,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Infrared",
@@ -652,7 +637,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "45892a81-dfbe-4040-9421-a7de9b3df77b",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -731,7 +715,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "087e68a8-1b8e-4746-88bf-ff55c0b4e519",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -810,7 +793,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b73f0775-998d-4f7d-a227-b929cfbff202",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -869,7 +851,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/categories/{{category_id}}/brands",
+									"raw": "{{url}}/v1.0/infrareds/{{device_id}}/categories/{{category_id}}/brands?country_code=LK",
 									"host": [
 										"{{url}}"
 									],
@@ -880,6 +862,12 @@
 										"categories",
 										"{{category_id}}",
 										"brands"
+									],
+									"query": [
+										{
+											"key": "country_code",
+											"value": "LK"
+										}
 									]
 								}
 							},
@@ -891,7 +879,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "6ea7c2e0-bc3a-494f-a09b-f788c134b75c",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -985,7 +972,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "2980e24f-adb2-4fb0-95c4-596257861dab",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1070,7 +1056,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e582186c-c45c-47dc-b77e-00cf46f049e9",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1160,7 +1145,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "205a426d-9096-4ac6-ac61-8bfc9cf8a97c",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1249,7 +1233,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "8b50d1ca-83f1-43f8-b487-311e4f07a40a",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1339,7 +1322,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "31b68f11-8ff1-417c-9cc5-2a658f690082",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1428,7 +1410,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "aac4ed63-24ec-4113-b982-da96911ce967",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1515,7 +1496,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "cd4b7328-9552-4fd9-84b3-4570c18079de",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1604,7 +1584,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f9b88941-72c2-4f2f-b4ba-23c8075d9302",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1694,7 +1673,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "9be8a843-5128-4b3e-bca0-4627350fd869",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1784,7 +1762,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "b537222c-12ce-4f7d-a696-eeebadee0627",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1875,7 +1852,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "705aa5e8-92ac-4a59-8b07-6c90178e9260",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -1957,7 +1933,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e255991e-7b9b-445c-a25e-dc55099fdfb7",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2042,7 +2017,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7486b606-96e9-4551-9453-92e0783e42f0",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2127,7 +2101,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1cdae0ca-f679-4d79-9cb8-ba660b4e1c60",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2215,7 +2188,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "dda11a1f-87b9-411e-b2db-18730e61cecc",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2296,7 +2268,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "8aeb8796-8eda-4cce-ad6c-340127c0fdd6",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2386,7 +2357,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "869a0c80-f316-4e0e-8936-25f4983c6fa7",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2475,7 +2445,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "1674c067-984a-4bb0-b9a1-929172ea6409",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2555,7 +2524,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "2a6846af-bc9a-49ad-93e6-8dcfca28533b",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2586,7 +2554,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "b3546595-890d-4cb6-b80b-20fd986955dc",
 										"exec": [
 											"var response = JSON.parse(responseBody);\r",
 											"\r",
@@ -2666,7 +2633,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e692e5ff-cff5-4193-a7f2-79bec58798af",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2697,7 +2663,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "5dd4969d-93dd-4871-a814-4629777fa817",
 										"exec": [
 											""
 										],
@@ -2761,7 +2726,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "18bc8a5c-5a62-4f0f-880d-379dab78693f",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -2792,7 +2756,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "549ab33e-66c3-4c5c-999b-3f6fd9c98321",
 										"exec": [
 											""
 										],
@@ -2854,9 +2817,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "General",
@@ -2867,7 +2828,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f48e0f5b-3d14-4b23-9de1-dcca82be155f",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -2898,7 +2858,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8f3fefea-fabb-4884-80f2-2c2e3eb755b4",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -2966,7 +2925,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "14041aaf-e77d-4f83-8956-72c49715a5eb",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -2997,7 +2955,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "8b94d143-dcfe-4653-93ef-9f0a81338b6b",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3071,7 +3028,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c9abf94a-fe26-437f-b2ad-e62ed5998936",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3102,7 +3058,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "833675b9-9f07-4483-bd26-0341e6c5ae88",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3173,7 +3128,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c9abf94a-fe26-437f-b2ad-e62ed5998936",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3204,7 +3158,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e25508fe-be0c-45b4-849a-0affd77bb140",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3282,7 +3235,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "7d1b4d17-dca8-41bb-835c-1e355fdd9b9f",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3313,7 +3265,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "acceb7c0-89b7-4d1f-8c12-8ad560695362",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3378,7 +3329,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ffe30765-8a6a-4187-892c-046d0f46ee40",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3409,7 +3359,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "0d3c7cb3-0103-49b2-b196-e98c51e71360",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3476,7 +3425,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c9abf94a-fe26-437f-b2ad-e62ed5998936",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3507,7 +3455,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "d2a410c1-698d-4e3a-88ef-2f659c0f13a6",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3575,7 +3522,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "227b8e10-0ba8-4886-a657-d2d49fa07322",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3606,7 +3552,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "7df543cc-9344-4e5d-acbc-dca25404492b",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3674,7 +3619,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "618a1139-db53-408e-8746-22b605168e8b",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3705,7 +3649,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "a77da54f-5fa7-46ba-91b1-321f6a6c2463",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3771,7 +3714,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "92c3b7df-7eec-4b7d-add5-164ced046776",
 										"exec": [
 											"(function () {",
 											"    var timestamp = getTime();",
@@ -3802,7 +3744,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"id": "e427c516-f201-4b30-abcb-b76a63d6a9d5",
 										"exec": [
 											"var response = JSON.parse(responseBody);",
 											"",
@@ -3865,12 +3806,9 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "User",
@@ -3881,7 +3819,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "6d3b0188-ed05-4357-a79b-1a3bbcea2804",
 								"exec": [
 									"(function () {",
 									"    var timestamp = getTime();",
@@ -3912,7 +3849,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "4f5df29e-1fef-418c-a2fc-8de0025b7198",
 								"exec": [
 									"var response = JSON.parse(responseBody);",
 									"",
@@ -3967,7 +3903,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"country_code\":\"1\",\n\t\"username\":\"test123\",\n\t\"password\":\"12345654321\",\n\t\"nick_name\":\"test user\",\n\t\"username_type\":\"3\"\n}"
+							"raw": "{\n\t\"country_code\":\"94\",\n\t\"username\":\"smartlifeqa\",\n\t\"password\":\"jAZ7nSoXD06Fk5sT\",\n\t\"nick_name\":\"test user\",\n\t\"username_type\":\"3\"\n}"
 						},
 						"url": {
 							"raw": "{{url}}/v1.0/apps/{{schema}}/user",
@@ -3990,7 +3926,6 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e430286f-58fd-4ce8-9688-6fec2a161160",
 								"exec": [
 									"(function () {",
 									"    var timestamp = getTime();",
@@ -4021,7 +3956,6 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "c857e3dd-9128-4fdd-bbc6-37e3d385551d",
 								"exec": [
 									"var response = JSON.parse(responseBody);",
 									"",
@@ -4093,8 +4027,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Timers",
@@ -4108,7 +4041,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "ed9f8e87-2db6-47aa-91f7-3a91cd37f90b",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4203,7 +4135,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "f256f9ae-2bfb-4154-835f-941f909b0664",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4291,7 +4222,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "9e3333aa-7e72-4519-8cda-ad0bd391b653",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4381,7 +4311,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "91b472d5-4960-41dd-818b-5eb0c6918783",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4462,7 +4391,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "455f851c-deff-40ef-95b7-cdb89e6853ce",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4535,9 +4463,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "General",
@@ -4548,7 +4474,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "c94f53ff-a17a-4e29-84bb-ae941f816d0a",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4654,7 +4579,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "499c5e6d-2ea1-42bd-8d19-483956bbb3dc",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4760,7 +4684,6 @@
 								{
 									"listen": "prerequest",
 									"script": {
-										"id": "e592866c-a366-435f-a3d4-60aa04acf448",
 										"exec": [
 											"(function () {\r",
 											"    var timestamp = getTime();\r",
@@ -4869,13 +4792,9 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
